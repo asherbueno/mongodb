@@ -2,26 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 const Ingredient = require('../models/Ingredient');
+const ingredientController = require('../controller/ingredientController');
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  Ingredient.find()
-    .then(ingredients => {
-      res.render('index', {
-        title: 'Ingredients',
-        ingredients: ingredients
-       })
-    })
-
-});
-
-router.post('/', (req, res) => {
-  const name = req.body.ingredient_name;
-  let ingredient = new Ingredient();
-  ingredient.name = name;
-  ingredient.save()
-    .then(() => {
-      res.redirect('/');
-    });
-});
-
+router.get('/', ingredientController.getIngredients);
+router.get('/ingredients/:id/edit', ingredientController.findOneIngredients);
+router.post('/', ingredientController.createIngridients);
+router.post('/ingredients/:id/edit', ingredientController.findOneAndUpdate);
+router.get('/ingredients/:id/delete', ingredientController.deleteIngredients);
 module.exports = router;
